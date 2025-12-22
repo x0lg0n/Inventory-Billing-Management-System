@@ -329,6 +329,21 @@ We provide templates for:
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
+## 📚 Documentation
+
+Learn more about the project through our comprehensive documentation:
+
+- [README.md](README.md) - Main project documentation
+- [CONTRIBUTING.md](CONTRIBUTING.md) - Guidelines for contributing to the project
+- [CHANGELOG.md](CHANGELOG.md) - Version history and changes
+- [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md) - Community standards and expectations
+- [GOVERNANCE.md](GOVERNANCE.md) - Project governance model
+- [SECURITY.md](SECURITY.md) - Security policies and vulnerability reporting
+- [SUPPORT.md](SUPPORT.md) - How to get help and support
+- [DEPLOYMENT.md](backend/DEPLOYMENT.md) - Deployment instructions
+- [QUICK_START.md](backend/QUICK_START.md) - Quick start guide
+- [PROJECT_SUMMARY.md](backend/PROJECT_SUMMARY.md) - Detailed project overview
+
 ## 🙏 Acknowledgments
 
 - Thanks to all contributors who have helped shape this project
@@ -338,7 +353,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 ## 💬 Support
 
 For support, please:
-1. Check the [Documentation](https://github.com/yourusername/Inventory-Billing-Management-System/wiki)
+1. Check our [Support Documentation](SUPPORT.md)
 2. Search [existing issues](https://github.com/yourusername/Inventory-Billing-Management-System/issues)
 3. Join our [Discord community](https://discord.gg/yourdiscord)
 4. Email us at support@yourdomain.com
