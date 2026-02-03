@@ -1,6 +1,25 @@
 const { User } = require('../models');
 const { generateAuthTokens } = require('../utils/jwt');
 const { asyncHandler } = require('../middleware/validation');
+const crypto = require('crypto');
+
+// Helper function to create user response object
+const createUserResponse = (user) => {
+  return {
+    id: user._id,
+    name: user.name,
+    email: user.email,
+    businessId: user.businessId,
+    role: user.role,
+    profileCompleted: user.profileCompleted,
+    provider: user.provider,
+    avatar: user.avatar,
+    emailVerified: user.emailVerified,
+    lastLoginAt: user.lastLoginAt,
+    createdAt: user.createdAt,
+    updatedAt: user.updatedAt
+  };
+};
 
 /**
  * @desc    Register new user
@@ -24,7 +43,8 @@ const register = asyncHandler(async (req, res) => {
     name,
     email,
     password,
-    businessId
+    businessId: businessId || null,
+    profileCompleted: !!businessId
   });
 
   // Generate tokens
@@ -34,13 +54,7 @@ const register = asyncHandler(async (req, res) => {
     success: true,
     message: 'User registered successfully',
     data: {
-      user: {
-        id: user._id,
-        name: user.name,
-        email: user.email,
-        businessId: user.businessId,
-        role: user.role
-      },
+      user: createUserResponse(user),
       ...tokens
     }
   });
@@ -80,13 +94,7 @@ const login = asyncHandler(async (req, res) => {
     success: true,
     message: 'Login successful',
     data: {
-      user: {
-        id: user._id,
-        name: user.name,
-        email: user.email,
-        businessId: user.businessId,
-        role: user.role
-      },
+      user: createUserResponse(user),
       ...tokens
     }
   });
@@ -124,15 +132,7 @@ const getProfile = asyncHandler(async (req, res) => {
   res.json({
     success: true,
     data: {
-      user: {
-        id: user._id,
-        name: user.name,
-        email: user.email,
-        businessId: user.businessId,
-        role: user.role,
-        createdAt: user.createdAt,
-        updatedAt: user.updatedAt
-      }
+      user: createUserResponse(user)
     }
   });
 });
@@ -143,11 +143,17 @@ const getProfile = asyncHandler(async (req, res) => {
  * @access  Private
  */
 const updateProfile = asyncHandler(async (req, res) => {
-  const { name } = req.body;
+   const { name, businessId, profileCompleted } = req.body;
+   
+   const updateData = {
+     name: name || req.user.name,
+     ...(businessId && { businessId }),
+     ...(profileCompleted !== undefined && { profileCompleted })
+   };
   
   const user = await User.findByIdAndUpdate(
     req.user.id,
-    { name },
+    updateData,
     { new: true, runValidators: true }
   );
 
@@ -162,13 +168,7 @@ const updateProfile = asyncHandler(async (req, res) => {
     success: true,
     message: 'Profile updated successfully',
     data: {
-      user: {
-        id: user._id,
-        name: user.name,
-        email: user.email,
-        businessId: user.businessId,
-        role: user.role
-      }
+      user: createUserResponse(user)
     }
   });
 });
@@ -210,11 +210,117 @@ const changePassword = asyncHandler(async (req, res) => {
   });
 });
 
+
+const completeProfile = asyncHandler(async (req, res) => {
+  const { businessId } = req.body;
+  
+  // Check if business ID already exists
+  const existingUser = await User.findOne({ businessId });
+  if (existingUser && existingUser._id.toString() !== req.user.id) {
+    return res.status(400).json({
+      success: false,
+      message: 'Business ID already exists. Please choose another one.'
+    });
+  }
+
+  // Update user profile
+  const user = await User.findByIdAndUpdate(
+    req.user.id,
+    {
+      businessId,
+      profileCompleted: true
+    },
+    { new: true, runValidators: true }
+  );
+
+  if (!user) {
+    return res.status(404).json({
+      success: false,
+      message: 'User not found'
+    });
+  }
+
+  res.json({
+    success: true,
+    message: 'Profile completed successfully',
+    data: {
+      user: createUserResponse(user)
+    }
+  });
+});
+
+
+const googleAuth = asyncHandler(async (req, res) => {
+  const state = crypto.randomBytes(32).toString('hex');
+  const redirectUri = process.env.FRONTEND_URL || 'http://localhost:3000';
+  
+  const authUrl = `https://accounts.google.com/o/oauth2/v2/auth?` +
+    `client_id=${process.env.GOOGLE_CLIENT_ID}&` +
+    `redirect_uri=${encodeURIComponent(process.env.GOOGLE_CALLBACK_URL || 'http://localhost:5000/api/auth/google/callback')}&` +
+    `response_type=code&` +
+    `scope=profile email&` +
+    `state=${state}&` +
+    `access_type=offline&` +
+    `prompt=consent`;
+
+  // Store state in session or cache for validation
+
+  req.oauthState = state;
+
+  res.json({
+    success: true,
+    data: {
+      authUrl,
+      state
+    }
+  });
+});
+
+
+const googleAuthCallback = asyncHandler(async (req, res) => {
+  const { state, code, error } = req.query;
+  
+  if (error) {
+    const redirectUri = process.env.FRONTEND_URL || 'http://localhost:3000';
+    return res.redirect(`${redirectUri}/login?error=oauth_failed&message=${error}`);
+  }
+
+  if (!state || !code) {
+    const redirectUri = process.env.FRONTEND_URL || 'http://localhost:3000';
+    return res.redirect(`${redirectUri}/login?error=oauth_failed&message=Invalid OAuth parameters`);
+  }
+
+  const user = req.user;
+  
+  if (!user) {
+    const redirectUri = process.env.FRONTEND_URL || 'http://localhost:3000';
+    return res.redirect(`${redirectUri}/login?error=oauth_failed&message=Authentication failed`);
+  }
+
+  // Generate tokens
+  const tokens = generateAuthTokens(user);
+
+  // Update last login
+  user.lastLoginAt = new Date();
+  await user.save();
+
+  const redirectUri = process.env.FRONTEND_URL || 'http://localhost:3000';
+  const tokenParam = encodeURIComponent(tokens.token);
+  const refreshTokenParam = encodeURIComponent(tokens.refreshToken);
+  
+  // Redirect to frontend with tokens and profile completion status
+  const profileCompleted = user.businessId && user.profileCompleted;
+  res.redirect(`${redirectUri}/auth/callback?token=${tokenParam}&refreshToken=${refreshTokenParam}&success=true&profileCompleted=${profileCompleted}`);
+});
+
 module.exports = {
   register,
   login,
   logout,
   getProfile,
   updateProfile,
-  changePassword
+  changePassword,
+  completeProfile,
+  googleAuth,
+  googleAuthCallback
 };
