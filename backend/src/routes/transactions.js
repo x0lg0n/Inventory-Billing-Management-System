@@ -9,6 +9,7 @@ const {
   getTransactionSummary
 } = require('../controllers/transactionController');
 const { authenticate, checkBusinessAccess } = require('../middleware/auth');
+const { requireProfileCompletion } = require('../middleware/profileCompletion');
 const { validateRequest } = require('../middleware/validation');
 const {
   createTransactionValidation,
@@ -17,8 +18,9 @@ const {
 
 const router = express.Router();
 
-// Apply authentication and business access middleware to all routes
+// Apply authentication, profile completion, and business access middleware to all routes
 router.use(authenticate);
+router.use(requireProfileCompletion);
 router.use(checkBusinessAccess);
 
 // Transaction CRUD routes
