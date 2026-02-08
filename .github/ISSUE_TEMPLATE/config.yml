@@ -1,0 +1,11 @@
+blank_issues_enabled: false
+contact_links:
+  - name: GitHub Discussions
+    url: https://github.com/x0lg0n/Inventory-Billing-Management-System/discussions
+    about: Ask questions and share ideas with the community
+  - name: Security Policy
+    url: https://github.com/x0lg0n/Inventory-Billing-Management-System/security/policy
+    about: Report security vulnerabilities responsibly
+  - name: Feature Requests
+    url: https://github.com/x0lg0n/Inventory-Billing-Management-System/discussions/categories/feature-requests
+    about: Suggest new features or improvements

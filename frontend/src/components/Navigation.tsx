@@ -1,39 +1,46 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
-import Link from 'next/link';
-import { usePathname } from 'next/navigation';
-import { Button } from '@/components/ui/button';
-import { ThemeToggle } from '@/components/theme-toggle';
-import { useAuth } from '@/contexts/AuthContext';
-import { FadeIn, SlideIn, ScaleOnHover, StaggerContainer, StaggerItem } from '@/components/animations';
+import { useState } from "react";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { Button } from "@/components/ui/button";
+import { ThemeToggle } from "@/components/theme-toggle";
+import { useAuth } from "@/contexts/AuthContext";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import {
+  FadeIn,
+  SlideIn,
+  ScaleOnHover,
+  StaggerContainer,
+  StaggerItem,
+} from "@/components/animations";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
-import { 
-  LayoutDashboard, 
-  Package, 
-  Users, 
-  Receipt, 
-  BarChart3, 
-  LogOut, 
+} from "@/components/ui/dropdown-menu";
+import {
+  LayoutDashboard,
+  Package,
+  Users,
+  Receipt,
+  BarChart3,
+  LogOut,
   User,
   Menu,
   X,
-  Home
-} from 'lucide-react';
-import { cn } from '@/lib/utils';
+  Home,
+} from "lucide-react";
+import { cn } from "@/lib/utils";
 
 const navigation = [
-  { name: 'Home', href: '/', icon: Home },
-  { name: 'Dashboard', href: '/dashboard', icon: LayoutDashboard },
-  { name: 'Products', href: '/products', icon: Package },
-  { name: 'Contacts', href: '/contacts', icon: Users },
-  { name: 'Transactions', href: '/transactions', icon: Receipt },
-  { name: 'Reports', href: '/reports', icon: BarChart3 },
+  { name: "Home", href: "/", icon: Home },
+  { name: "Dashboard", href: "/dashboard", icon: LayoutDashboard },
+  { name: "Products", href: "/products", icon: Package },
+  { name: "Contacts", href: "/contacts", icon: Users },
+  { name: "Transactions", href: "/transactions", icon: Receipt },
+  { name: "Reports", href: "/reports", icon: BarChart3 },
 ];
 
 export function Navigation() {
@@ -68,10 +75,10 @@ export function Navigation() {
                   <Link
                     href={item.href}
                     className={cn(
-                      'flex items-center space-x-2 transition-all duration-300 hover:text-foreground/80 hover:scale-105 px-3 py-2 rounded-md',
+                      "flex items-center space-x-2 transition-all duration-300 hover:text-foreground/80 hover:scale-105 px-3 py-2 rounded-md",
                       pathname === item.href
-                        ? 'text-foreground bg-accent/50'
-                        : 'text-foreground/60'
+                        ? "text-foreground bg-accent/50"
+                        : "text-foreground/60"
                     )}
                   >
                     <Icon className="h-4 w-4" />
@@ -87,13 +94,22 @@ export function Navigation() {
             <ScaleOnHover>
               <ThemeToggle />
             </ScaleOnHover>
-            
+
             {user ? (
               <ScaleOnHover>
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
-                    <Button variant="outline" className="relative h-8 w-8 rounded-full hover:bg-accent">
-                      <User className="h-4 w-4" />
+                    <Button
+                      variant="ghost"
+                      className="relative h-8 w-8 rounded-full"
+                    >
+                      <Avatar className="h-8 w-8">
+                        <User className="h-4 w-4" />
+                        <AvatarImage src="/rabbit.jpg" alt="User" />
+                        <AvatarFallback>
+                          <User className="h-4 w-4" />
+                        </AvatarFallback>
+                      </Avatar>
                     </Button>
                   </DropdownMenuTrigger>
                   <DropdownMenuContent className="w-56" align="end" forceMount>
@@ -105,7 +121,10 @@ export function Navigation() {
                         </p>
                       </div>
                     </div>
-                    <DropdownMenuItem onClick={logout} className="hover:bg-destructive/10 hover:text-destructive">
+                    <DropdownMenuItem
+                      onClick={logout}
+                      className="hover:bg-destructive/10 hover:text-destructive"
+                    >
                       <LogOut className="mr-2 h-4 w-4" />
                       Log out
                     </DropdownMenuItem>
@@ -115,7 +134,7 @@ export function Navigation() {
             ) : (
               <div className="flex items-center space-x-2">
                 <ScaleOnHover>
-                  <Button variant="ghost" asChild className="hover:bg-accent">
+                  <Button asChild className="hover:bg-accent">
                     <Link href="/login">Sign In</Link>
                   </Button>
                 </ScaleOnHover>
@@ -130,7 +149,6 @@ export function Navigation() {
             {/* Mobile menu button */}
             <ScaleOnHover>
               <Button
-                variant="ghost"
                 className="md:hidden hover:bg-accent"
                 size="sm"
                 onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
@@ -158,10 +176,10 @@ export function Navigation() {
                         <Link
                           href={item.href}
                           className={cn(
-                            'flex items-center space-x-2 rounded-md px-3 py-2 text-sm font-medium transition-all duration-300 hover:bg-accent hover:text-accent-foreground hover:scale-105 hover:translate-x-2',
+                            "flex items-center space-x-2 rounded-md px-3 py-2 text-sm font-medium transition-all duration-300 hover:bg-accent hover:text-accent-foreground hover:scale-105 hover:translate-x-2",
                             pathname === item.href
-                              ? 'bg-accent text-accent-foreground'
-                              : 'text-foreground/60'
+                              ? "bg-accent text-accent-foreground"
+                              : "text-foreground/60"
                           )}
                           onClick={() => setMobileMenuOpen(false)}
                         >

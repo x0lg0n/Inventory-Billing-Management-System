@@ -1,0 +1,41 @@
+name: Security Audit
+
+on:
+  push:
+    branches: [ main, open-source, develop ]
+  pull_request:
+    branches: [ main, open-source, develop ]
+  schedule:
+    - cron: '0 0 * * 0'  # Weekly on Sunday
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Install pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: latest
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20.x
+          cache: 'pnpm'
+      
+      - name: Install dependencies (backend)
+        run: cd backend && pnpm install --frozen-lockfile
+      
+      - name: Audit backend dependencies
+        run: cd backend && pnpm audit --audit-level=moderate
+        continue-on-error: true
+      
+      - name: Install dependencies (frontend)
+        run: cd frontend && pnpm install --frozen-lockfile
+      
+      - name: Audit frontend dependencies
+        run: cd frontend && pnpm audit --audit-level=moderate
+        continue-on-error: true
