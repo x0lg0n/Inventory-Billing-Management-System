@@ -27,19 +27,21 @@ A modern Next.js 15 frontend application built with shadcn/ui, TypeScript, and T
 
 ## 📋 Prerequisites
 
-- Node.js 18+ 
+- Node.js 18+
 - npm or yarn
 - Backend API running (see backend documentation)
 
 ## 🚀 Quick Start
 
 ### 1. Install Dependencies
+
 ```bash
 cd frontend
 npm install --legacy-peer-deps
 ```
 
 ### 2. Environment Setup
+
 ```bash
 # Copy environment file
 cp .env.example .env.local
@@ -49,6 +51,7 @@ cp .env.example .env.local
 ```
 
 ### 3. Start Development Server
+
 ```bash
 npm run dev
 ```
@@ -57,7 +60,7 @@ The application will be available at `http://localhost:3000`
 
 ## 📁 Project Structure
 
-```
+```folder
 frontend/
 ├── src/
 │   ├── app/                    # Next.js 15 App Router
@@ -91,6 +94,7 @@ frontend/
 ## 🔐 Authentication Flow
 
 ### Login Process
+
 1. User enters email and password
 2. Frontend sends credentials to `/api/auth/login`
 3. Backend validates and returns JWT token
@@ -98,11 +102,13 @@ frontend/
 5. User redirected to dashboard
 
 ### Protected Routes
+
 - All routes except `/login` and `/register` require authentication
 - `ProtectedRoute` component checks for valid token
 - Automatic redirect to login if unauthorized
 
 ### Token Management
+
 - JWT token stored in localStorage
 - Automatic token inclusion in API requests
 - Token expiration handling with redirect to login
@@ -110,12 +116,14 @@ frontend/
 ## 📱 Pages & Features
 
 ### 🏠 Dashboard (`/dashboard`)
+
 - **Overview Cards**: Products, customers, vendors, low stock alerts
 - **Financial Summary**: Monthly sales, purchases, profit
 - **Recent Activity**: Latest transactions and low stock products
 - **Quick Navigation**: Easy access to all modules
 
 ### 📦 Products (`/products`)
+
 - **Product List**: Searchable table with stock status
 - **Add Product**: Form to create new products
 - **Edit Product**: Update product information
@@ -124,6 +132,7 @@ frontend/
 - **Low Stock Alerts**: Visual indicators for restocking
 
 ### 👥 Contacts (`/contacts`)
+
 - **Unified Management**: Customers and vendors in one place
 - **Tabbed Interface**: Separate views for customers/vendors
 - **Contact Information**: Phone, email, address management
@@ -131,6 +140,7 @@ frontend/
 - **Search & Filter**: Find contacts quickly
 
 ### 💰 Transactions (`/transactions`)
+
 - **Sales Recording**: Process customer sales with stock reduction
 - **Purchase Recording**: Record vendor purchases with stock increase
 - **Transaction History**: Complete transaction log
@@ -138,6 +148,7 @@ frontend/
 - **Automatic Calculations**: Total amounts and stock updates
 
 ### 📊 Reports (`/reports`)
+
 - **Inventory Reports**: Stock levels and low stock alerts
 - **Financial Reports**: Sales, purchases, profit analysis
 - **Customer Reports**: Customer transaction history
@@ -147,6 +158,7 @@ frontend/
 ## 🎨 UI Components
 
 ### Core Components (shadcn/ui)
+
 - **Button**: Multiple variants and sizes
 - **Input**: Form inputs with validation
 - **Card**: Content containers
@@ -157,6 +169,7 @@ frontend/
 - **Dropdown**: Action menus
 
 ### Custom Components
+
 - **Layout**: Main application layout with sidebar
 - **ProtectedRoute**: Authentication guard
 - **Navigation**: Responsive sidebar navigation
@@ -164,6 +177,7 @@ frontend/
 ## 🔧 API Integration
 
 ### HTTP Client Configuration
+
 ```typescript
 // Automatic token management
 const apiClient = new ApiClient();
@@ -174,12 +188,14 @@ const transaction = await apiClient.createTransaction(data);
 ```
 
 ### Error Handling
+
 - Global error interceptor
 - Automatic token refresh handling
 - User-friendly error messages
 - Network error recovery
 
 ### Request/Response Flow
+
 1. Component triggers API call
 2. Request interceptor adds JWT token
 3. API processes request
@@ -189,11 +205,13 @@ const transaction = await apiClient.createTransaction(data);
 ## 🎯 State Management
 
 ### Authentication Context
+
 ```typescript
 const { user, login, logout, loading } = useAuth();
 ```
 
 ### Local State Patterns
+
 - Form state with controlled components
 - Loading states for async operations
 - Error state management
@@ -202,11 +220,13 @@ const { user, login, logout, loading } = useAuth();
 ## 📱 Responsive Design
 
 ### Breakpoints
+
 - **Mobile**: < 768px
 - **Tablet**: 768px - 1024px  
 - **Desktop**: > 1024px
 
 ### Mobile Features
+
 - Responsive navigation
 - Touch-friendly interactions
 - Optimized form layouts
@@ -215,12 +235,14 @@ const { user, login, logout, loading } = useAuth();
 ## 🔒 Security Features
 
 ### Client-Side Security
+
 - JWT token validation
 - Protected route access control
 - Input sanitization
 - XSS protection
 
 ### Best Practices
+
 - Environment variable usage
 - Secure token storage
 - API endpoint validation
@@ -229,7 +251,9 @@ const { user, login, logout, loading } = useAuth();
 ## 🚀 Deployment
 
 ### Vercel Deployment
+
 1. **Push to GitHub**
+
    ```bash
    git init
    git add .
@@ -243,11 +267,13 @@ const { user, login, logout, loading } = useAuth();
    - Set output directory: `.next`
 
 3. **Environment Variables**
-   ```
+
+   ```bash
    NEXT_PUBLIC_API_URL=https://your-backend.onrender.com/api
    ```
 
 ### Build Commands
+
 ```bash
 # Development
 npm run dev
@@ -263,6 +289,7 @@ npm run lint
 ## 🧪 Testing
 
 ### Manual Testing Checklist
+
 - [ ] User registration and login
 - [ ] Dashboard data loading
 - [ ] Product CRUD operations
@@ -272,6 +299,7 @@ npm run lint
 - [ ] Mobile responsiveness
 
 ### API Testing
+
 - Use browser developer tools
 - Monitor network requests
 - Verify error handling
@@ -280,12 +308,14 @@ npm run lint
 ## 📈 Performance Optimization
 
 ### Next.js Features
+
 - **Automatic Code Splitting**: Route-based splitting
 - **Image Optimization**: Next.js Image component
 - **Static Generation**: Pre-built pages where possible
 - **Server Components**: Reduced client bundle size
 
 ### Loading States
+
 - Skeleton loaders for better UX
 - Progressive data loading
 - Optimistic UI updates
@@ -294,6 +324,7 @@ npm run lint
 ## 🎨 Customization
 
 ### Theme Configuration
+
 ```javascript
 // tailwind.config.js
 module.exports = {
@@ -309,6 +340,7 @@ module.exports = {
 ```
 
 ### Component Customization
+
 - Modify shadcn/ui components in `components/ui/`
 - Update theme variables in `globals.css`
 - Add custom utility classes
@@ -318,6 +350,7 @@ module.exports = {
 ### Common Issues
 
 #### **Build Errors**
+
 ```bash
 # Clear Next.js cache
 rm -rf .next
@@ -325,16 +358,19 @@ npm run build
 ```
 
 #### **API Connection Issues**
+
 - Verify `NEXT_PUBLIC_API_URL` in `.env.local`
 - Check backend server is running
 - Verify CORS configuration
 
 #### **Authentication Problems**
+
 - Clear localStorage: `localStorage.clear()`
 - Check token expiration
 - Verify backend JWT configuration
 
 #### **Style Issues**
+
 - Rebuild TailwindCSS: `npm run build`
 - Check component imports
 - Verify CSS variable definitions
@@ -342,24 +378,28 @@ npm run build
 ## 📚 Resources
 
 ### Documentation
+
 - [Next.js 15 Docs](https://nextjs.org/docs)
 - [shadcn/ui Components](https://ui.shadcn.com/)
 - [TailwindCSS Docs](https://tailwindcss.com/docs)
 - [TypeScript Handbook](https://www.typescriptlang.org/docs/)
 
 ### Tools
+
 - [React Developer Tools](https://react.dev/learn/react-developer-tools)
 - [TailwindCSS IntelliSense](https://marketplace.visualstudio.com/items?itemName=bradlc.vscode-tailwindcss)
 
 ## 🤝 Contributing
 
 ### Development Workflow
+
 1. Create feature branch
 2. Implement changes
 3. Test thoroughly
 4. Submit pull request
 
 ### Code Standards
+
 - TypeScript strict mode
 - ESLint configuration
 - Prettier formatting

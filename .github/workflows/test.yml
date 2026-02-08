@@ -1,0 +1,62 @@
+name: Test
+
+on:
+  push:
+    branches: [ main, open-source, develop ]
+  pull_request:
+    branches: [ main, open-source, develop ]
+
+jobs:
+  backend-test:
+    runs-on: ubuntu-latest
+    
+    strategy:
+      matrix:
+        node-version: [ 18.x, 20.x ]
+    
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Install pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: latest
+      
+      - name: Setup Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'pnpm'
+      
+      - name: Install dependencies (backend)
+        run: cd backend && pnpm install --frozen-lockfile
+      
+      - name: Run tests (backend)
+        run: cd backend && pnpm test
+
+  frontend-test:
+    runs-on: ubuntu-latest
+    
+    strategy:
+      matrix:
+        node-version: [ 18.x, 20.x ]
+    
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Install pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: latest
+      
+      - name: Setup Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'pnpm'
+      
+      - name: Install dependencies (frontend)
+        run: cd frontend && pnpm install --frozen-lockfile
+      
+      - name: Run linting checks (frontend)
+        run: cd frontend && pnpm lint
