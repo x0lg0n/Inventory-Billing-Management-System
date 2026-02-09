@@ -1,5 +1,5 @@
 import axios, { AxiosInstance, AxiosError } from 'axios';
-import { ApiResponse } from '@/types';
+import { ApiResponse, EmailPreferencesData } from '@/types';
 
 interface ProductData {
   [key: string]: unknown;
@@ -281,7 +281,7 @@ class ApiClient {
     return response.data;
   }
 
-  async updateEmailPreferences(data: ContactData): Promise<ApiResponse> {
+  async updateEmailPreferences(data: EmailPreferencesData): Promise<ApiResponse> {
     const response = await this.instance.put('/email-preferences', data);
     return response.data;
   }

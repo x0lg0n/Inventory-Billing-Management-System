@@ -4,10 +4,10 @@
   "description": "Next.js 15 frontend for Inventory & Billing Management System",
   "private": true,
   "scripts": {
-    "dev": "next dev --turbopack",
-    "build": "next build --turbopack",
-    "start": "next start --turbopack",
-    "lint": "next lint --turbopack"
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.3.0",

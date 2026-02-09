@@ -25,15 +25,10 @@ const emailPreferenceSchema = new mongoose.Schema({
   dailyReport: {
     type: Boolean,
     default: false
-  },
-  createdAt: {
-    type: Date,
-    default: Date.now
-  },
-  updatedAt: {
-    type: Date,
-    default: Date.now
   }
 }, { timestamps: true });
+
+// Add unique compound index to prevent duplicate preferences
+emailPreferenceSchema.index({ userId: 1, businessId: 1 }, { unique: true });
 
 module.exports = mongoose.model('EmailPreference', emailPreferenceSchema);

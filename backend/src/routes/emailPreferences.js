@@ -34,9 +34,19 @@ router.get('/', authenticate, async (req, res) => {
 // Update email preferences
 router.put('/', authenticate, async (req, res) => {
   try {
+    // Whitelist allowed fields to prevent mass-assignment
+    const allowedFields = ['transactionCreated', 'transactionUpdated', 'lowStockAlert', 'dailyReport'];
+    const update = {};
+    
+    allowedFields.forEach(field => {
+      if (field in req.body) {
+        update[field] = req.body[field];
+      }
+    });
+
     const preferences = await EmailPreference.findOneAndUpdate(
       { userId: req.user._id, businessId: req.user.businessId },
-      req.body,
+      update,
       { new: true, upsert: true }
     );
 
@@ -45,9 +55,10 @@ router.put('/', authenticate, async (req, res) => {
       data: preferences
     });
   } catch (error) {
+    // Return generic error message to avoid information disclosure
     res.status(500).json({
       success: false,
-      message: error.message
+      message: 'Failed to update email preferences'
     });
   }
 });

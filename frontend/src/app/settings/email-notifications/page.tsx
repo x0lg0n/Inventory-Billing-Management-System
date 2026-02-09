@@ -5,12 +5,9 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Button } from '@/components/ui/button';
 import { apiClient } from '@/lib/api';
 import { Mail, AlertCircle, CheckCircle } from 'lucide-react';
+import type { EmailPreferencesData } from '@/types';
 
-interface EmailPreferences {
-  transactionCreated?: boolean;
-  transactionUpdated?: boolean;
-  lowStockAlert?: boolean;
-  dailyReport?: boolean;
+interface EmailPreferences extends EmailPreferencesData {
   [key: string]: boolean | undefined;
 }
 
@@ -32,8 +29,17 @@ export default function EmailNotificationsPage() {
   const fetchPreferences = async () => {
     try {
       const response = await apiClient.getEmailPreferences();
-      if (response.success) {
-        setPreferences(response.data);
+      if (response.success && response.data) {
+        // Sanitize response to only include allowed fields
+        const sanitizedPreferences: EmailPreferences = {
+          transactionCreated: Boolean(response.data.transactionCreated),
+          transactionUpdated: Boolean(response.data.transactionUpdated),
+          lowStockAlert: Boolean(response.data.lowStockAlert),
+          dailyReport: Boolean(response.data.dailyReport)
+        };
+        setPreferences(sanitizedPreferences);
+      } else {
+        setMessage({ type: 'error', text: response.message || 'Failed to load preferences' });
       }
     } catch (error) {
       console.error('Failed to fetch preferences:', error);
@@ -54,9 +60,19 @@ export default function EmailNotificationsPage() {
     setSaving(true);
     setMessage(null);
     try {
-      const response = await apiClient.updateEmailPreferences(preferences);
+      // Sanitize before sending to API
+      const dataToSend: EmailPreferencesData = {
+        transactionCreated: preferences.transactionCreated,
+        transactionUpdated: preferences.transactionUpdated,
+        lowStockAlert: preferences.lowStockAlert,
+        dailyReport: preferences.dailyReport
+      };
+      
+      const response = await apiClient.updateEmailPreferences(dataToSend);
       if (response.success) {
         setMessage({ type: 'success', text: 'Email preferences updated successfully!' });
+      } else {
+        setMessage({ type: 'error', text: response.message || 'Failed to save preferences' });
       }
     } catch (error) {
       console.error('Failed to save preferences:', error);

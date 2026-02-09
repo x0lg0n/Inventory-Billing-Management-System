@@ -6,6 +6,10 @@ const notificationHistorySchema = new mongoose.Schema({
     ref: 'User',
     required: true
   },
+  businessId: {
+    type: String,
+    required: true
+  },
   email: String,
   type: {
     type: String,
@@ -25,5 +29,9 @@ const notificationHistorySchema = new mongoose.Schema({
     default: Date.now
   }
 }, { timestamps: true });
+
+// Add index for querying notifications by user and business
+notificationHistorySchema.index({ userId: 1, businessId: 1 });
+notificationHistorySchema.index({ businessId: 1, createdAt: -1 });
 
 module.exports = mongoose.model('NotificationHistory', notificationHistorySchema);

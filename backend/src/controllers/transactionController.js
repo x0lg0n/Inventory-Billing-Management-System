@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const { Transaction, Product, Contact } = require('../models');
+const { Transaction, Product, Contact, EmailPreference } = require('../models');
 const { asyncHandler } = require('../middleware/validation');
 const { sendTransactionCreatedEmail, sendTransactionStatusEmail } = require('../services/emailService');
 const { User } = require('../models');
@@ -247,16 +247,27 @@ const createTransaction = asyncHandler(async (req, res) => {
       .populate('vendorId', 'name phone email')
       .populate('products.productId', 'name category');
 
-    // Send email notification (non-blocking)
-    try {
-      const user = await User.findById(req.user._id);
-      if (user && user.email) {
-        await sendTransactionCreatedEmail(user.email, populatedTransaction);
+    // Send email notification (fire-and-forget, don't await or block response)
+    setImmediate(async () => {
+      try {
+        // Check email preferences first
+        const preferences = await EmailPreference.findOne({
+          userId: req.user._id,
+          businessId: req.user.businessId
+        });
+        
+        if (preferences && preferences.transactionCreated && req.user.email) {
+          sendTransactionCreatedEmail(req.user.email, populatedTransaction, {
+            userId: req.user._id,
+            businessId: req.user.businessId
+          }).catch(error => {
+            console.error('Failed to send transaction creation email:', error);
+          });
+        }
+      } catch (error) {
+        console.error('Failed to check transaction email preferences:', error);
       }
-    } catch (emailError) {
-      console.error('Failed to send transaction creation email:', emailError);
-      // Don't fail the transaction if email fails
-    }
+    });
 
     res.status(201).json({
       success: true,
@@ -376,38 +387,51 @@ const updateTransactionStatus = asyncHandler(async (req, res) => {
   const { id } = req.params;
   const { status } = req.body;
 
-  const transaction = await Transaction.findOne({
+  // Get the current status before updating
+  const currentTransaction = await Transaction.findOne({
     _id: id,
     businessId: req.businessId
-  });
+  }).select('status').lean();
 
-  if (!transaction) {
+  if (!currentTransaction) {
     return res.status(404).json({
       success: false,
       message: 'Transaction not found'
     });
   }
 
-  const oldStatus = transaction.status;
+  const oldStatus = currentTransaction.status;
 
+  // Update the transaction in one operation
   const updatedTransaction = await Transaction.findOneAndUpdate(
     { _id: id, businessId: req.businessId },
     { status },
     { new: true, runValidators: true }
   );
 
-  // Send email notification for status change (non-blocking)
-  try {
-    if (oldStatus !== status) {
-      const user = await User.findById(req.user._id);
-      if (user && user.email) {
-        await sendTransactionStatusEmail(user.email, updatedTransaction, oldStatus, status);
+  // Send email notification for status change (fire-and-forget, don't await or block response)
+  setImmediate(async () => {
+    try {
+      if (oldStatus !== status) {
+        // Check email preferences first
+        const preferences = await EmailPreference.findOne({
+          userId: req.user._id,
+          businessId: req.user.businessId
+        });
+        
+        if (preferences && preferences.transactionUpdated && req.user.email) {
+          sendTransactionStatusEmail(req.user.email, updatedTransaction, oldStatus, status, {
+            userId: req.user._id,
+            businessId: req.user.businessId
+          }).catch(error => {
+            console.error('Failed to send transaction status email:', error);
+          });
+        }
       }
+    } catch (error) {
+      console.error('Failed to check transaction email preferences:', error);
     }
-  } catch (emailError) {
-    console.error('Failed to send transaction status email:', emailError);
-    // Don't fail the status update if email fails
-  }
+  });
 
   res.json({
     success: true,
