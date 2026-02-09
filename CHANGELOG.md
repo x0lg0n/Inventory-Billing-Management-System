@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+
 - Initial project structure
 - Backend API with Express.js
 - Frontend with Next.js 15
@@ -21,16 +22,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Comprehensive API documentation with Postman collection
 
 ### Changed
+
 - Improved UI/UX with Shadcn/ui components
 - Enhanced security with Helmet.js and rate limiting
 - Optimized performance with Next.js 15 Turbopack
 
 ### Fixed
+
 - Various bug fixes and performance improvements
 
 ## [1.0.0] - 2025-12-22
 
-### Added
+### Feature Added
+
 - Initial release of Inventory & Billing Management System
 - Core features including product management, contact management, and transaction processing
 - User authentication and authorization system
@@ -39,5 +43,5 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Docker deployment support
 - Comprehensive documentation and contribution guidelines
 
-[Unreleased]: https://github.com/x0lg0n/Inventory-Billing-Management-System/compare/v1.0.0...HEAD
-[1.0.0]: https://github.com/x0lg0n/Inventory-Billing-Management-System/releases/tag/v1.0.0
+[Unreleased]:  `https://github.com/x0lg0n/Inventory-Billing-Management-System/compare/v1.0.0...HEAD`
+[1.0.0]: `https://github.com/x0lg0n/Inventory-Billing-Management-System/releases/tag/v1.0.0`

@@ -60,10 +60,12 @@ export default function NotFoundPage() {
                   </p>
                   <Link href="/dashboard">
                     <AnimatedButton>
-                      <Button className="w-full">
-                        <Home className="w-4 h-4 mr-2" />
-                        Dashboard
-                      </Button>
+                      <div className="w-full">
+                        <Button variant="outline" className="w-full">
+                          <Home className="w-4 h-4 mr-2" />
+                          Dashboard
+                        </Button>
+                      </div>
                     </AnimatedButton>
                   </Link>
                 </div>
@@ -82,10 +84,12 @@ export default function NotFoundPage() {
                   </p>
                   <Link href="/products">
                     <AnimatedButton>
-                      <Button variant="outline" className="w-full">
-                        <Search className="w-4 h-4 mr-2" />
-                        Explore
-                      </Button>
+                      <div className="w-full">
+                        <Button variant="outline" className="w-full">
+                          <Search className="w-4 h-4 mr-2" />
+                          Explore
+                        </Button>
+                      </div>
                     </AnimatedButton>
                   </Link>
                 </div>
@@ -97,15 +101,16 @@ export default function NotFoundPage() {
         {/* Navigation Actions */}
         <FadeIn delay={0.8}>
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-            <AnimatedButton>
-              <Button 
-                variant="ghost" 
-                onClick={handleGoBack}
-                className="flex items-center gap-2"
-              >
-                <ArrowLeft className="w-4 h-4" />
-                Go Back
-              </Button>
+            <AnimatedButton onClick={handleGoBack}>
+              <div>
+                <Button 
+                  variant="ghost" 
+                  className="flex items-center gap-2"
+                >
+                  <ArrowLeft className="w-4 h-4" />
+                  Go Back
+                </Button>
+              </div>
             </AnimatedButton>
             
             <div className="text-sm text-muted-foreground">
@@ -114,10 +119,12 @@ export default function NotFoundPage() {
             
             <Link href="/">
               <AnimatedButton>
-                <Button variant="default">
-                  <Home className="w-4 h-4 mr-2" />
-                  Home Page
-                </Button>
+                <div>
+                  <Button variant="default">
+                    <Home className="w-4 h-4 mr-2" />
+                    Home Page
+                  </Button>
+                </div>
               </AnimatedButton>
             </Link>
           </div>

@@ -2,7 +2,7 @@
   "name": "inventory-billing-frontend",
   "version": "1.0.0",
   "description": "Next.js 15 frontend for Inventory & Billing Management System",
-  "private": true,
+  "private": false,
   "scripts": {
     "dev": "next dev",
     "build": "next build",
@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "@hookform/resolvers": "^3.3.0",
+    "@radix-ui/react-avatar": "^1.1.11",
     "@radix-ui/react-dialog": "^1.0.5",
     "@radix-ui/react-dropdown-menu": "^2.0.6",
     "@radix-ui/react-label": "^2.0.2",
@@ -59,5 +60,9 @@
     "typescript"
   ],
   "author": "Siddhartha Kunwar",
-  "license": "ISC"
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/x0lg0n/Inventory-Billing-Management-System.git"
+  }
 }

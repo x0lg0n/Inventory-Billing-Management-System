@@ -17,7 +17,7 @@ We take the security of our software seriously. If you believe you have found a 
 
 ### Reporting Process
 
-1. **Email**: Send an email to [security@genesis360.com](mailto:security@genesis360.com) with the subject line "Security Vulnerability Report - Inventory Billing System"
+1. **GitHub Security Advisory**: Use [GitHub's Security Advisory feature](https://github.com/x0lg0n/Inventory-Billing-Management-System/security/advisories) to report vulnerabilities privately. This is the preferred method.
 
 2. **Include the following information**:
    - Description of the vulnerability
@@ -77,6 +77,6 @@ For more information about our security practices, please refer to:
 For any security-related questions or concerns, please contact:
 
 - **Email**: [security@genesis360.com](mailto:security@genesis360.com)
-- **PGP Key**: 
+- **PGP Key**:
 
 We appreciate your efforts to responsibly disclose your findings and help keep our users safe.

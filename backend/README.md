@@ -73,19 +73,23 @@ The server will start at `http://localhost:5000`
 ## 📚 API Documentation
 
 ### Base URL
-```
+
+```http
 http://localhost:5000/api
 ```
 
 ### Authentication
+
 All endpoints except registration and login require a Bearer token in the Authorization header:
-```
+
+```txt
 Authorization: Bearer <your_jwt_token>
 ```
 
 ## 🔐 Authentication Endpoints
 
 ### Register User
+
 ```http
 POST /api/auth/register
 Content-Type: application/json
@@ -99,6 +103,7 @@ Content-Type: application/json
 ```
 
 ### Login
+
 ```http
 POST /api/auth/login
 Content-Type: application/json
@@ -110,12 +115,14 @@ Content-Type: application/json
 ```
 
 ### Get Profile
+
 ```http
 GET /api/auth/profile
 Authorization: Bearer <token>
 ```
 
 ### Update Profile
+
 ```http
 PUT /api/auth/profile
 Authorization: Bearer <token>
@@ -127,6 +134,7 @@ Content-Type: application/json
 ```
 
 ### Change Password
+
 ```http
 PUT /api/auth/change-password
 Authorization: Bearer <token>
@@ -139,6 +147,7 @@ Content-Type: application/json
 ```
 
 ### Logout
+
 ```http
 GET /api/auth/logout
 Authorization: Bearer <token>
@@ -147,12 +156,14 @@ Authorization: Bearer <token>
 ## 📦 Product Management Endpoints
 
 ### Get All Products
+
 ```http
 GET /api/products?search=laptop&category=electronics&page=1&limit=10
 Authorization: Bearer <token>
 ```
 
 ### Create Product
+
 ```http
 POST /api/products
 Authorization: Bearer <token>
@@ -170,12 +181,14 @@ Content-Type: application/json
 ```
 
 ### Get Single Product
+
 ```http
 GET /api/products/:id
 Authorization: Bearer <token>
 ```
 
 ### Update Product
+
 ```http
 PUT /api/products/:id
 Authorization: Bearer <token>
@@ -189,12 +202,14 @@ Content-Type: application/json
 ```
 
 ### Delete Product
+
 ```http
 DELETE /api/products/:id
 Authorization: Bearer <token>
 ```
 
 ### Update Product Stock
+
 ```http
 PATCH /api/products/:id/stock
 Authorization: Bearer <token>
@@ -207,18 +222,21 @@ Content-Type: application/json
 ```
 
 ### Get Low Stock Products
+
 ```http
 GET /api/products/low-stock
 Authorization: Bearer <token>
 ```
 
 ### Get Product Categories
+
 ```http
 GET /api/products/categories
 Authorization: Bearer <token>
 ```
 
 ### Get Products by Category
+
 ```http
 GET /api/products/category/electronics
 Authorization: Bearer <token>
@@ -227,12 +245,14 @@ Authorization: Bearer <token>
 ## 👥 Contact Management Endpoints
 
 ### Get All Contacts
+
 ```http
 GET /api/contacts?type=customer&search=john&page=1&limit=10
 Authorization: Bearer <token>
 ```
 
 ### Create Contact
+
 ```http
 POST /api/contacts
 Authorization: Bearer <token>
@@ -256,12 +276,14 @@ Content-Type: application/json
 ```
 
 ### Get Single Contact
+
 ```http
 GET /api/contacts/:id
 Authorization: Bearer <token>
 ```
 
 ### Update Contact
+
 ```http
 PUT /api/contacts/:id
 Authorization: Bearer <token>
@@ -274,30 +296,35 @@ Content-Type: application/json
 ```
 
 ### Delete Contact
+
 ```http
 DELETE /api/contacts/:id
 Authorization: Bearer <token>
 ```
 
 ### Get Customers Only
+
 ```http
 GET /api/contacts/customers
 Authorization: Bearer <token>
 ```
 
 ### Get Vendors Only
+
 ```http
 GET /api/contacts/vendors
 Authorization: Bearer <token>
 ```
 
 ### Search Contacts
+
 ```http
 GET /api/contacts/search/john?type=customer&limit=5
 Authorization: Bearer <token>
 ```
 
 ### Update Contact Balance
+
 ```http
 PATCH /api/contacts/:id/balance
 Authorization: Bearer <token>
@@ -312,12 +339,14 @@ Content-Type: application/json
 ## 💰 Transaction Management Endpoints
 
 ### Get All Transactions
+
 ```http
 GET /api/transactions?type=sale&startDate=2024-01-01&endDate=2024-01-31&page=1&limit=10
 Authorization: Bearer <token>
 ```
 
 ### Create Transaction (Sale)
+
 ```http
 POST /api/transactions
 Authorization: Bearer <token>
@@ -339,6 +368,7 @@ Content-Type: application/json
 ```
 
 ### Create Transaction (Purchase)
+
 ```http
 POST /api/transactions
 Authorization: Bearer <token>
@@ -360,30 +390,35 @@ Content-Type: application/json
 ```
 
 ### Get Single Transaction
+
 ```http
 GET /api/transactions/:id
 Authorization: Bearer <token>
 ```
 
 ### Get Sales Only
+
 ```http
 GET /api/transactions/sales?customerId=customer_id&startDate=2024-01-01
 Authorization: Bearer <token>
 ```
 
 ### Get Purchases Only
+
 ```http
 GET /api/transactions/purchases?vendorId=vendor_id&startDate=2024-01-01
 Authorization: Bearer <token>
 ```
 
 ### Get Transaction Summary
+
 ```http
 GET /api/transactions/summary?startDate=2024-01-01&endDate=2024-01-31
 Authorization: Bearer <token>
 ```
 
 ### Update Transaction Status
+
 ```http
 PATCH /api/transactions/:id/status
 Authorization: Bearer <token>
@@ -397,30 +432,35 @@ Content-Type: application/json
 ## 📊 Reporting Endpoints
 
 ### Dashboard Summary
+
 ```http
 GET /api/reports/dashboard
 Authorization: Bearer <token>
 ```
 
 ### Inventory Report
+
 ```http
 GET /api/reports/inventory?category=electronics&lowStock=true&sortBy=stock&sortOrder=asc
 Authorization: Bearer <token>
 ```
 
 ### Transaction Report
+
 ```http
 GET /api/reports/transactions?startDate=2024-01-01&endDate=2024-01-31&type=sale&groupBy=day
 Authorization: Bearer <token>
 ```
 
 ### Customer Report
+
 ```http
 GET /api/reports/customer/:customerId?startDate=2024-01-01&endDate=2024-01-31
 Authorization: Bearer <token>
 ```
 
 ### Vendor Report
+
 ```http
 GET /api/reports/vendor/:vendorId?startDate=2024-01-01&endDate=2024-01-31
 Authorization: Bearer <token>
@@ -429,11 +469,13 @@ Authorization: Bearer <token>
 ## 🏥 Health & Status Endpoints
 
 ### Health Check
+
 ```http
 GET /health
 ```
 
 ### API Documentation
+
 ```http
 GET /api/docs
 ```
@@ -452,6 +494,7 @@ GET /api/docs
 ## 📝 Data Models
 
 ### User Model
+
 ```javascript
 {
   name: String,
@@ -464,6 +507,7 @@ GET /api/docs
 ```
 
 ### Product Model
+
 ```javascript
 {
   name: String,
@@ -479,6 +523,7 @@ GET /api/docs
 ```
 
 ### Contact Model
+
 ```javascript
 {
   name: String,
@@ -501,6 +546,7 @@ GET /api/docs
 ```
 
 ### Transaction Model
+
 ```javascript
 {
   type: String (sale|purchase),
@@ -526,6 +572,7 @@ GET /api/docs
 ## 🚀 Deployment
 
 ### Environment Variables for Production
+
 ```env
 NODE_ENV=production
 PORT=5000
@@ -573,16 +620,19 @@ curl -X POST http://localhost:5000/api/products \\
 ## 🐛 Common Issues & Solutions
 
 ### Database Connection Issues
+
 - Ensure MongoDB is running
 - Check MONGODB_URI format
 - Verify network access for Atlas
 
 ### Authentication Issues
+
 - Check JWT_SECRET is set
 - Verify token format (Bearer token)
 - Ensure token hasn't expired
 
 ### Validation Errors
+
 - Check request body format
 - Verify required fields
 - Review field length limits
@@ -590,6 +640,7 @@ curl -X POST http://localhost:5000/api/products \\
 ## 📞 Support
 
 For issues and questions:
+
 - Check the API documentation at `/api/docs`
 - Review error messages in response
 - Check server logs for detailed errors
@@ -604,4 +655,4 @@ This project is licensed under the ISC License.
 
 ---
 
-**Happy Coding! 🚀**
+### **Happy Coding! 🚀**
