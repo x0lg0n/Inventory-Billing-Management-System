@@ -34,18 +34,20 @@ router.get('/', authenticate, async (req, res) => {
 // Update email preferences
 router.put('/', authenticate, async (req, res) => {
   try {
-    // Whitelist allowed fields to prevent mass-assignment
-    const allowedFields = ['transactionCreated', 'transactionUpdated', 'lowStockAlert', 'dailyReport'];
+    // Explicit property access to avoid bracket notation on user input
     const update = {};
-    
-    allowedFields.forEach(field => {
-      if (field in req.body) {
-        // Validate that field value is a boolean to prevent type injection
-        if (typeof req.body[field] === 'boolean') {
-          update[field] = req.body[field];
-        }
-      }
-    });
+    if (typeof req.body.transactionCreated === 'boolean') {
+      update.transactionCreated = req.body.transactionCreated;
+    }
+    if (typeof req.body.transactionUpdated === 'boolean') {
+      update.transactionUpdated = req.body.transactionUpdated;
+    }
+    if (typeof req.body.lowStockAlert === 'boolean') {
+      update.lowStockAlert = req.body.lowStockAlert;
+    }
+    if (typeof req.body.dailyReport === 'boolean') {
+      update.dailyReport = req.body.dailyReport;
+    }
 
     const preferences = await EmailPreference.findOneAndUpdate(
       { userId: req.user._id, businessId: req.user.businessId },
