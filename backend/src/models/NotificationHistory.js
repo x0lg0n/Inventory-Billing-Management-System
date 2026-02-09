@@ -1,0 +1,29 @@
+const mongoose = require('mongoose');
+
+const notificationHistorySchema = new mongoose.Schema({
+  userId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User',
+    required: true
+  },
+  email: String,
+  type: {
+    type: String,
+    enum: ['transaction_created', 'transaction_updated', 'low_stock', 'daily_report'],
+    required: true
+  },
+  subject: String,
+  status: {
+    type: String,
+    enum: ['sent', 'failed', 'bounced'],
+    default: 'sent'
+  },
+  error: String,
+  transactionId: mongoose.Schema.Types.ObjectId,
+  sentAt: {
+    type: Date,
+    default: Date.now
+  }
+}, { timestamps: true });
+
+module.exports = mongoose.model('NotificationHistory', notificationHistorySchema);

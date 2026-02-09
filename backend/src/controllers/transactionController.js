@@ -1,6 +1,8 @@
 const mongoose = require('mongoose');
 const { Transaction, Product, Contact } = require('../models');
 const { asyncHandler } = require('../middleware/validation');
+const { sendTransactionCreatedEmail, sendTransactionStatusEmail } = require('../services/emailService');
+const { User } = require('../models');
 
 /**
  * @desc    Get all transactions with filters
@@ -245,6 +247,17 @@ const createTransaction = asyncHandler(async (req, res) => {
       .populate('vendorId', 'name phone email')
       .populate('products.productId', 'name category');
 
+    // Send email notification (non-blocking)
+    try {
+      const user = await User.findById(req.user._id);
+      if (user && user.email) {
+        await sendTransactionCreatedEmail(user.email, populatedTransaction);
+      }
+    } catch (emailError) {
+      console.error('Failed to send transaction creation email:', emailError);
+      // Don't fail the transaction if email fails
+    }
+
     res.status(201).json({
       success: true,
       message: `${type === 'sale' ? 'Sale' : 'Purchase'} recorded successfully`,
@@ -363,11 +376,10 @@ const updateTransactionStatus = asyncHandler(async (req, res) => {
   const { id } = req.params;
   const { status } = req.body;
 
-  const transaction = await Transaction.findOneAndUpdate(
-    { _id: id, businessId: req.businessId },
-    { status },
-    { new: true, runValidators: true }
-  );
+  const transaction = await Transaction.findOne({
+    _id: id,
+    businessId: req.businessId
+  });
 
   if (!transaction) {
     return res.status(404).json({
@@ -376,10 +388,31 @@ const updateTransactionStatus = asyncHandler(async (req, res) => {
     });
   }
 
+  const oldStatus = transaction.status;
+
+  const updatedTransaction = await Transaction.findOneAndUpdate(
+    { _id: id, businessId: req.businessId },
+    { status },
+    { new: true, runValidators: true }
+  );
+
+  // Send email notification for status change (non-blocking)
+  try {
+    if (oldStatus !== status) {
+      const user = await User.findById(req.user._id);
+      if (user && user.email) {
+        await sendTransactionStatusEmail(user.email, updatedTransaction, oldStatus, status);
+      }
+    }
+  } catch (emailError) {
+    console.error('Failed to send transaction status email:', emailError);
+    // Don't fail the status update if email fails
+  }
+
   res.json({
     success: true,
     message: 'Transaction status updated successfully',
-    data: { transaction }
+    data: { transaction: updatedTransaction }
   });
 });
 

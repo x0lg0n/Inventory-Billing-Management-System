@@ -1,6 +1,18 @@
 import axios, { AxiosInstance, AxiosError } from 'axios';
 import { ApiResponse } from '@/types';
 
+interface ProductData {
+  [key: string]: unknown;
+}
+
+interface ContactData {
+  [key: string]: unknown;
+}
+
+interface TransactionData {
+  [key: string]: unknown;
+}
+
 class ApiClient {
   private instance: AxiosInstance;
 
@@ -118,12 +130,12 @@ class ApiClient {
     return response.data;
   }
 
-  async createProduct(data: any): Promise<ApiResponse> {
+  async createProduct(data: ProductData): Promise<ApiResponse> {
     const response = await this.instance.post('/products', data);
     return response.data;
   }
 
-  async updateProduct(id: string, data: any): Promise<ApiResponse> {
+  async updateProduct(id: string, data: ProductData): Promise<ApiResponse> {
     const response = await this.instance.put(`/products/${id}`, data);
     return response.data;
   }
@@ -159,12 +171,12 @@ class ApiClient {
     return response.data;
   }
 
-  async createContact(data: any): Promise<ApiResponse> {
+  async createContact(data: ContactData): Promise<ApiResponse> {
     const response = await this.instance.post('/contacts', data);
     return response.data;
   }
 
-  async updateContact(id: string, data: any): Promise<ApiResponse> {
+  async updateContact(id: string, data: ContactData): Promise<ApiResponse> {
     const response = await this.instance.put(`/contacts/${id}`, data);
     return response.data;
   }
@@ -174,12 +186,20 @@ class ApiClient {
     return response.data;
   }
 
-  async getCustomers(params?: any): Promise<ApiResponse> {
+  async getCustomers(params?: {
+    search?: string;
+    page?: number;
+    limit?: number;
+  }): Promise<ApiResponse> {
     const response = await this.instance.get('/contacts/customers', { params });
     return response.data;
   }
 
-  async getVendors(params?: any): Promise<ApiResponse> {
+  async getVendors(params?: {
+    search?: string;
+    page?: number;
+    limit?: number;
+  }): Promise<ApiResponse> {
     const response = await this.instance.get('/contacts/vendors', { params });
     return response.data;
   }
@@ -201,12 +221,17 @@ class ApiClient {
     return response.data;
   }
 
-  async createTransaction(data: any): Promise<ApiResponse> {
+  async createTransaction(data: TransactionData): Promise<ApiResponse> {
     const response = await this.instance.post('/transactions', data);
     return response.data;
   }
 
-  async getTransactionSummary(params?: any): Promise<ApiResponse> {
+  async getTransactionSummary(params?: {
+    startDate?: string;
+    endDate?: string;
+    page?: number;
+    limit?: number;
+  }): Promise<ApiResponse> {
     const response = await this.instance.get('/transactions/summary', { params });
     return response.data;
   }
@@ -217,23 +242,47 @@ class ApiClient {
     return response.data;
   }
 
-  async getInventoryReport(params?: any): Promise<ApiResponse> {
+  async getInventoryReport(params?: {
+    page?: number;
+    limit?: number;
+  }): Promise<ApiResponse> {
     const response = await this.instance.get('/reports/inventory', { params });
     return response.data;
   }
 
-  async getTransactionReport(params?: any): Promise<ApiResponse> {
+  async getTransactionReport(params?: {
+    startDate?: string;
+    endDate?: string;
+    page?: number;
+    limit?: number;
+  }): Promise<ApiResponse> {
     const response = await this.instance.get('/reports/transactions', { params });
     return response.data;
   }
 
-  async getCustomerReport(id: string, params?: any): Promise<ApiResponse> {
+  async getCustomerReport(id: string, params?: {
+    page?: number;
+    limit?: number;
+  }): Promise<ApiResponse> {
     const response = await this.instance.get(`/reports/customer/${id}`, { params });
     return response.data;
   }
 
-  async getVendorReport(id: string, params?: any): Promise<ApiResponse> {
+  async getVendorReport(id: string, params?: {
+    page?: number;
+    limit?: number;
+  }): Promise<ApiResponse> {
     const response = await this.instance.get(`/reports/vendor/${id}`, { params });
+    return response.data;
+  }
+
+  async getEmailPreferences(): Promise<ApiResponse> {
+    const response = await this.instance.get('/email-preferences');
+    return response.data;
+  }
+
+  async updateEmailPreferences(data: ContactData): Promise<ApiResponse> {
+    const response = await this.instance.put('/email-preferences', data);
     return response.data;
   }
 }
