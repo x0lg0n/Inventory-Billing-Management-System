@@ -31,6 +31,7 @@ import {
   Menu,
   X,
   Home,
+  Mail
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -121,10 +122,13 @@ export function Navigation() {
                         </p>
                       </div>
                     </div>
-                    <DropdownMenuItem
-                      onClick={logout}
-                      className="hover:bg-destructive/10 hover:text-destructive"
-                    >
+                    <DropdownMenuItem asChild>
+                      <Link href="/settings/email-notifications" className="cursor-pointer">
+                        <Mail className="mr-2 h-4 w-4" />
+                        Email Settings
+                      </Link>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem onClick={logout} className="hover:bg-destructive/10 hover:text-destructive">
                       <LogOut className="mr-2 h-4 w-4" />
                       Log out
                     </DropdownMenuItem>

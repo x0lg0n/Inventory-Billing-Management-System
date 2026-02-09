@@ -194,6 +194,22 @@ export interface PaginatedResponse<T> {
   };
 }
 
+// Email preferences types
+export interface EmailPreferencesData {
+  transactionCreated?: boolean;
+  transactionUpdated?: boolean;
+  lowStockAlert?: boolean;
+  dailyReport?: boolean;
+}
+
+export interface EmailPreferences extends EmailPreferencesData {
+  _id?: string;
+  userId?: string;
+  businessId?: string;
+  createdAt?: string;
+  updatedAt?: string;
+}
+
 // Auth context types
 export interface AuthContextType {
   user: User | null;
