@@ -40,7 +40,10 @@ router.put('/', authenticate, async (req, res) => {
     
     allowedFields.forEach(field => {
       if (field in req.body) {
-        update[field] = req.body[field];
+        // Validate that field value is a boolean to prevent type injection
+        if (typeof req.body[field] === 'boolean') {
+          update[field] = req.body[field];
+        }
       }
     });
 

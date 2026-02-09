@@ -6,6 +6,7 @@ import { usePathname } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { useAuth } from "@/contexts/AuthContext";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { FadeIn, SlideIn, ScaleOnHover, StaggerContainer, StaggerItem } from "@/components/animations";
 import {
   DropdownMenu,
