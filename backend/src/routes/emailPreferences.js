@@ -26,7 +26,7 @@ router.get('/', authenticate, async (req, res) => {
   } catch (error) {
     res.status(500).json({
       success: false,
-      message: error.message
+      message: 'Failed to retrieve email preferences'
     });
   }
 });
