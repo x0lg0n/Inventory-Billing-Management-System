@@ -9,15 +9,19 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": ["inventory", "billing", "management", "backend", "api", "nodejs", "express", "mongodb"],
-  "author": "Siddhartha",
-  "license": "ISC",
+  "author": "Siddhartha Kunwar",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/x0lg0n/Inventory-Billing-Management-System.git"
+  },
   "dependencies": {
     "bcryptjs": "^3.0.2",
     "cors": "^2.8.5",
     "dotenv": "^17.2.2",
     "express": "^5.1.0",
     "express-rate-limit": "^8.1.0",
-    "express-validator": "^7.2.1",
+    "express-validator": "^7.3.1",
     "helmet": "^8.1.0",
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.18.0",

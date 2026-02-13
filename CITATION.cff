@@ -3,9 +3,16 @@ message: "If you use this software, please cite it as below."
 authors:
   - family-names: Kunwar
     given-names: Siddhartha
-    orcid: "https://orcid.org/0000-0000-0000-0000"
+    github: x0lg0n
 title: "Inventory & Billing Management System"
 version: 1.0.0
-doi: 10.5281/zenodo.1234567
 date-released: 2025-12-22
 url: "https://github.com/x0lg0n/Inventory-Billing-Management-System"
+repository-code: "https://github.com/x0lg0n/Inventory-Billing-Management-System"
+license: MIT
+description: "A comprehensive open-source system for small businesses to manage products, customers, vendors, transactions, and basic reports with authentication."
+keywords:
+  - inventory-management
+  - billing-system
+  - business-management
+  - open-source

@@ -1,34 +1,35 @@
-'use client';
+"use client";
 
-import Link from 'next/link';
-import { usePathname } from 'next/navigation';
-import { useAuth } from '@/contexts/AuthContext';
-import { Button } from '@/components/ui/button';
-import { ThemeToggle } from '@/components/theme-toggle';
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { useAuth } from "@/contexts/AuthContext";
+import { Button } from "@/components/ui/button";
+import { ThemeToggle } from "@/components/theme-toggle";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
-import { 
-  LayoutDashboard, 
-  Package, 
-  Users, 
-  Receipt, 
-  BarChart3, 
-  LogOut, 
+} from "@/components/ui/dropdown-menu";
+import {
+  LayoutDashboard,
+  Package,
+  Users,
+  Receipt,
+  BarChart3,
+  LogOut,
   User,
-  Menu
-} from 'lucide-react';
-import { cn } from '@/lib/utils';
+  Menu,
+} from "lucide-react";
+import { cn } from "@/lib/utils";
 
 const navigation = [
-  { name: 'Dashboard', href: '/dashboard', icon: LayoutDashboard },
-  { name: 'Products', href: '/products', icon: Package },
-  { name: 'Contacts', href: '/contacts', icon: Users },
-  { name: 'Transactions', href: '/transactions', icon: Receipt },
-  { name: 'Reports', href: '/reports', icon: BarChart3 },
+  { name: "Dashboard", href: "/dashboard", icon: LayoutDashboard },
+  { name: "Products", href: "/products", icon: Package },
+  { name: "Contacts", href: "/contacts", icon: Users },
+  { name: "Transactions", href: "/transactions", icon: Receipt },
+  { name: "Reports", href: "/reports", icon: BarChart3 },
 ];
 
 interface LayoutProps {
@@ -53,7 +54,13 @@ export function Layout({ children }: LayoutProps) {
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Button variant="ghost" className="relative h-8 w-8 rounded-full">
-                  <User className="h-4 w-4" />
+                  <Avatar className="h-8 w-8">
+                    <User className="h-4 w-4" />
+                    <AvatarImage src="/rabbit.jpg" alt="User" />
+                    <AvatarFallback>
+                      <User className="h-4 w-4" />
+                    </AvatarFallback>
+                  </Avatar>
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent className="w-56" align="end" forceMount>
@@ -82,16 +89,16 @@ export function Layout({ children }: LayoutProps) {
             {navigation.map((item) => {
               const Icon = item.icon;
               const isActive = pathname === item.href;
-              
+
               return (
                 <Link
                   key={item.name}
                   href={item.href}
                   className={cn(
-                    'flex items-center gap-3 rounded-lg px-3 py-2 text-sm transition-colors',
+                    "flex items-center gap-3 rounded-lg px-3 py-2 text-sm transition-colors",
                     isActive
-                      ? 'bg-primary text-primary-foreground'
-                      : 'text-muted-foreground hover:bg-accent hover:text-accent-foreground'
+                      ? "bg-primary text-primary-foreground"
+                      : "text-muted-foreground hover:bg-accent hover:text-accent-foreground"
                   )}
                 >
                   <Icon className="h-4 w-4" />
@@ -103,9 +110,7 @@ export function Layout({ children }: LayoutProps) {
         </aside>
 
         {/* Main content */}
-        <main className="flex-1 p-6">
-          {children}
-        </main>
+        <main className="flex-1 p-6">{children}</main>
       </div>
     </div>
   );

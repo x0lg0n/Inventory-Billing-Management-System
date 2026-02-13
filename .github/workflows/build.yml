@@ -1,0 +1,54 @@
+name: Build
+
+on:
+  push:
+    branches: [ main, open-source, develop ]
+  pull_request:
+    branches: [ main, open-source, develop ]
+
+jobs:
+  build-backend:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Install pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: latest
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20.x
+          cache: 'pnpm'
+      
+      - name: Install dependencies (backend)
+        run: cd backend && pnpm install --frozen-lockfile
+      
+      - name: Verify backend setup
+        run: cd backend && ls -la src/
+
+  build-frontend:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Install pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: latest
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20.x
+          cache: 'pnpm'
+      
+      - name: Install dependencies (frontend)
+        run: cd frontend && pnpm install --frozen-lockfile
+      
+      - name: Build frontend
+        run: cd frontend && pnpm build

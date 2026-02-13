@@ -1,0 +1,32 @@
+name: Lint
+
+on:
+  push:
+    branches: [ main, open-source, develop ]
+  pull_request:
+    branches: [ main, open-source, develop ]
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Install pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: latest
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20.x
+          cache: 'pnpm'
+      
+      - name: Install dependencies (frontend)
+        run: cd frontend && pnpm install --frozen-lockfile
+      
+      - name: Run ESLint (frontend)
+        run: cd frontend && pnpm lint
+        continue-on-error: true
