@@ -3,10 +3,13 @@ const cors = require('cors');
 const helmet = require('helmet');
 const morgan = require('morgan');
 const rateLimit = require('express-rate-limit');
+const session = require('express-session');
+const MongoStore = require('connect-mongo');
 require('dotenv').config();
 
-// Import database connection
+// Import database connection and passport
 const connectDB = require('./config/database');
+const passport = require('./config/passport');
 
 // Import routes
 const authRoutes = require('./routes/auth');
@@ -25,6 +28,26 @@ connectDB();
 
 // Trust proxy (important for rate limiting and getting real IP addresses)
 app.set('trust proxy', 1);
+
+// Session configuration for Passport
+app.use(session({
+  secret: process.env.SESSION_SECRET || 'your_session_secret_key',
+  resave: false,
+  saveUninitialized: false,
+  cookie: {
+    secure: process.env.NODE_ENV === 'production',
+    httpOnly: true,
+    maxAge: 24 * 60 * 60 * 1000 // 24 hours
+  },
+  store: MongoStore.create({
+    mongoUrl: process.env.MONGODB_URI,
+    collectionName: 'sessions'
+  })
+}));
+
+// Initialize Passport
+app.use(passport.initialize());
+app.use(passport.session());
 
 // Security middleware
 app.use(helmet({

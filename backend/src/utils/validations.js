@@ -61,6 +61,17 @@ const changePasswordValidation = [
     .withMessage('New password must contain at least one lowercase letter, one uppercase letter, and one number')
 ];
 
+const completeProfileValidation = [
+  body('businessId')
+    .trim()
+    .notEmpty()
+    .withMessage('Business ID is required')
+    .isLength({ min: 3, max: 50 })
+    .withMessage('Business ID must be between 3 and 50 characters')
+    .matches(/^[a-zA-Z0-9_-]+$/)
+    .withMessage('Business ID can only contain letters, numbers, underscores, and hyphens')
+];
+
 // Product validations
 const createProductValidation = [
   body('name')
@@ -378,6 +389,7 @@ module.exports = {
   loginValidation,
   updateProfileValidation,
   changePasswordValidation,
+  completeProfileValidation,
   // Product validations
   createProductValidation,
   updateProductValidation,

@@ -48,13 +48,7 @@ const authenticate = async (req, res, next) => {
       });
     }
 
-    // Validate user has required fields
-    if (!user.businessId) {
-      return res.status(400).json({
-        success: false,
-        message: 'Invalid user data. Business ID not found.'
-      });
-    }
+    // Note: Don't require businessId here - let users complete profile first
 
     // Attach user to request
     req.user = user;
@@ -81,6 +75,28 @@ const authenticate = async (req, res, next) => {
       message: 'Internal server error during authentication.'
     });
   }
+};
+
+//  Profile completion middleware
+// Ensures user has completed their profile before accessing protected routes
+
+const requireProfileCompleted = (req, res, next) => {
+  if (!req.user) {
+    return res.status(401).json({
+      success: false,
+      message: 'Access denied. User not authenticated.'
+    });
+  }
+
+  if (!req.user.profileCompleted) {
+    return res.status(403).json({
+      success: false,
+      message: 'Profile completion required. Please complete your profile first.',
+      requiresProfileCompletion: true
+    });
+  }
+
+  next();
 };
 
 /**
@@ -151,5 +167,6 @@ const checkBusinessAccess = (req, res, next) => {
 module.exports = {
   authenticate,
   authorize,
-  checkBusinessAccess
+  checkBusinessAccess,
+  requireProfileCompleted
 };

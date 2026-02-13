@@ -3,11 +3,12 @@ const jwt = require('jsonwebtoken');
 /**
  * Generate JWT token
  * @param {Object} payload - Token payload
+ * @param {String} expiresIn - Token expiration time
  * @returns {String} JWT token
  */
-const generateToken = (payload) => {
+const generateToken = (payload, expiresIn = null) => {
   return jwt.sign(payload, process.env.JWT_SECRET, {
-    expiresIn: process.env.JWT_EXPIRE || '7d'
+    expiresIn: expiresIn || process.env.JWT_EXPIRE || '7d'
   });
 };
 
@@ -30,13 +31,16 @@ const generateAuthTokens = (user) => {
     id: user._id,
     email: user.email,
     businessId: user.businessId,
-    role: user.role
+    role: user.role,
+    provider: user.provider || 'local'
   };
 
   const token = generateToken(payload);
+  const refreshToken = generateToken({ id: user._id, type: 'refresh' }, '30d');
 
   return {
     token,
+    refreshToken,
     tokenType: 'Bearer',
     expiresIn: process.env.JWT_EXPIRE || '7d'
   };
